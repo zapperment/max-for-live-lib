@@ -1,0 +1,21 @@
+{
+  "name": "max-for-live-lib",
+  "version": "0.0.1",
+  "description": "Library of useful Max for Live objects",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zapperment/max-for-live-lib.git"
+  },
+  "author": "Patrick Hund <pahund@team.mobile.de> (https://ebaytech.berlin/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zapperment/max-for-live-lib/issues"
+  },
+  "homepage": "https://github.com/zapperment/max-for-live-lib#readme"
+}
