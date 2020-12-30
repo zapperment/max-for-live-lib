@@ -1,26 +1,26 @@
 import log from "./log";
 
-autowatch = 1;
-inlets = 1;
-outlets = 2;
+export const autowatch = 1;
+export const inlets = 1;
+export const outlets = 2;
 
-var CHANNEL_1_CC = 176;
+const CHANNEL_1_CC = 176;
 
-function anything() {
-	var msg = arrayfromargs(messagename, arguments);
-	var statusByte = msg[0];
-	var controllerNumber = msg[1];
-	var value = msg[2];
-	
-	if (statusByte == CHANNEL_1_CC && controllerNumber == jsarguments[1]) {
-		var thisDeviceTrack = new LiveAPI("this_device canonical_parent");
-		var selectedTrack = new LiveAPI("live_set view selected_track");
-		if (thisDeviceTrack.id === selectedTrack.id) {
-            log("logging the shmogging");
-			outlet(0, value);
-			return;
-		}
-	}
-	// pass the MIDI message on for chaining
-	outlet(1, msg);
+export function anything() {
+  const msg = arrayfromargs(messagename, arguments);
+  const statusByte = msg[0];
+  const controllerNumber = msg[1];
+  const value = msg[2];
+
+  if (statusByte == CHANNEL_1_CC && controllerNumber == jsarguments[1]) {
+    const thisDeviceTrack = new LiveAPI("this_device canonical_parent");
+    const selectedTrack = new LiveAPI("live_set view selected_track");
+    if (thisDeviceTrack.id === selectedTrack.id) {
+      log("received CC ", controllerNumber, value);
+      outlet(0, value);
+      return;
+    }
+  }
+  // pass the MIDI message on for chaining
+  outlet(1, msg);
 }

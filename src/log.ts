@@ -3,7 +3,8 @@ export default function log(...messages: any[]) {
 		if (msg === undefined) {
 			continue;
 		}
-		else if (msg instanceof Date) {
+
+		if (msg instanceof Date) {
 			post(msg.toString());
 		}
 		else if (typeof msg === "object") {

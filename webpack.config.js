@@ -1,21 +1,29 @@
-const { resolve } = require('path');
-const webpack = require('webpack');
-const MaxForLivePlugin = require('./src/webpack/MaxForLivePlugin');
+const { resolve } = require("path");
+const MaxForLivePlugin = require("./src/webpack/MaxForLivePlugin");
 
 module.exports = {
-    entry: './src/filterMidiCC.js',
-    output: {
-        library: 'filterMidiCC',
-        filename: 'filterMidiCC.js',
-        //path: '/Users/pahund/Library/Mobile\ Documents/com~apple~CloudDocs/Private\ Drive/Audioproduktion/Ableton Live/User Library/Max for Live'
-        path: resolve(__dirname, 'dist')
-    },
-    optimization: {
-        minimize: false
-    },
-    mode: "production",
-    plugins: [
-        new MaxForLivePlugin({ objectName: 'filterMidiCC' })
+  entry: "./src/filterMidiCC.ts",
+  output: {
+    library: "filterMidiCC",
+    filename: "filterMidiCC.js",
+    path: resolve(__dirname, "dist"),
+  },
+  module: {
+    rules: [
+      {
+        test: /\.ts$/,
+        use: "ts-loader",
+        exclude: /node_modules/,
+      },
     ],
-    target: "es5"
+  },
+  resolve: {
+    extensions: [".ts"],
+  },
+  optimization: {
+    minimize: false,
+  },
+  mode: "production",
+  plugins: [new MaxForLivePlugin({ objectName: "filterMidiCC" })],
+  target: "es5",
 };
