@@ -1,6 +1,6 @@
 {
   "name": "max-for-live-lib",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Library of useful Max for Live objects",
   "private": true,
   "dependencies": {
