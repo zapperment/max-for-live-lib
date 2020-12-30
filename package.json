@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "Library of useful Max for Live objects",
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  },
   "devDependencies": {
     "prettier": "^2.2.1",
     "ts-loader": "^8.0.12",
@@ -12,7 +14,8 @@
     "webpack-cli": "^4.3.0"
   },
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "watch": "webpack --watch"
   },
   "repository": {
     "type": "git",

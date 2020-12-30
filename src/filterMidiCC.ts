@@ -16,7 +16,7 @@ export function anything() {
     const thisDeviceTrack = new LiveAPI("this_device canonical_parent");
     const selectedTrack = new LiveAPI("live_set view selected_track");
     if (thisDeviceTrack.id === selectedTrack.id) {
-      log("received MIDI control change ", controllerNumber, value);
+      log("received MIDI CC ", controllerNumber, value);
       outlet(0, value);
       return;
     }
