@@ -10,16 +10,17 @@ for Live is a powerful tool to code music software.
 
 However, the JavaScript language version used in the code of js objects is
 ECMAScript 5, which is quite old and misses a lot of useful features of modern
-JavaScript, like promises, async/await, let, const, for...of loops, arrow
-function, to name just a few.
+JavaScript, like module loading, promises, async/await, let, const, for...of
+loops, arrow function, to name just a few.
 
 Wouldn't it be nice to harness all that power when writing code for M4L patcher
 **plus** profit from the excellent developer experience and bug safety provided
 by [TypeScript](https://www.typescriptlang.org)?
 
-This project makes this possible through a special webpack build that transpiles
-TypeScript code of each js object into a single bundle that is ES5 compatible
-and can be used directly in Max for Live.
+This project makes this possible through a special
+[webpack](https://webpack.js.org) build that transpiles TypeScript code of each
+js object into a single bundle that is ES5 compatible and can be used directly
+in Max for Live.
 
 ## Installing and building
 
@@ -29,7 +30,7 @@ and can be used directly in Max for Live.
   installed
 - Make sure you have the package management tool [Yarn](https://yarnpkg.com)
   installed
-  
+
 ### Installation
 
 - Clone this repository to your local file system:
@@ -75,9 +76,10 @@ yarn build
 
 ### filterMidiCC
 
-This js object can receive MIDI input and filter out MIDI control change (CC) messages. If the controller number 
-matches the specified number, the value of the control change is sent to outlet 1, otherwise the MIDI data is
-sent through to outlet 2.
+This js object can receive MIDI input and filter out MIDI control change (CC)
+messages. If the controller number matches the specified number, the value of
+the control change is sent to outlet 1, otherwise the MIDI data is sent through
+to outlet 2.
 
 ![Patcher example with filterMidiCC js object](docs/images/filterMidiCC.png)
 
