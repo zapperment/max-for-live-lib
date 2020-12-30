@@ -1,4 +1,4 @@
-# max-for-live-lib
+# The Zapperment Max for Live Lib
 
 A library of useful [Max for Live](https://www.ableton.com/live/max-for-live/)
 objects, written in [TypeScript](https://www.typescriptlang.org).
