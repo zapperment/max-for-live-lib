@@ -1,4 +1,4 @@
-import log from "./log";
+import { log } from "./util";
 
 export const autowatch = 1;
 export const inlets = 1;
@@ -16,7 +16,7 @@ export function anything() {
     const thisDeviceTrack = new LiveAPI("this_device canonical_parent");
     const selectedTrack = new LiveAPI("live_set view selected_track");
     if (thisDeviceTrack.id === selectedTrack.id) {
-      log("received CC ", controllerNumber, value);
+      log("received MIDI control change ", controllerNumber, value);
       outlet(0, value);
       return;
     }
