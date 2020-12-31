@@ -1,6 +1,56 @@
 const { ConcatSource } = require("webpack-sources");
 const { Compilation } = require("webpack");
 
+// https://docs.cycling74.com/max8/vignettes/jsbasic#Special_Function_Names
+const specialFuncs = [
+  "bang",
+  "loadbang",
+  "getvalueof",
+  "setvalueof",
+  "save",
+  "notifydeleted",
+];
+const specialFuncsDefToAny = ["msg_int", "msg_float", "list"];
+
+function specialFunction(chunkName, funcName, defaultToAnything = false) {
+  const str = defaultToAnything
+    ? `
+  
+function ${funcName}() {
+  if (typeof ${chunkName}.${funcName} !== 'function') {
+    if (typeof ${chunkName}.anything === 'function') {
+      return ${chunkName}.anything.apply(null, arguments);
+    }
+    return;
+  }
+  return ${chunkName}.${funcName}.apply(null, arguments);
+}
+
+  `
+    : `
+  
+function ${funcName}() {
+  if (typeof ${chunkName}.${funcName} !== 'function') {
+    return;
+  }
+  return ${chunkName}.${funcName}.apply(null, arguments);
+}
+  
+  `;
+  return str.trim();
+}
+
+function specialFunctions(chunkName) {
+  return [
+    specialFuncs
+      .map((funcName) => specialFunction(chunkName, funcName))
+      .join("\n\n"),
+    specialFuncsDefToAny
+      .map((funcName) => specialFunction(chunkName, funcName, true))
+      .join("\n\n"),
+  ].join("\n\n");
+}
+
 class MaxForLivePlugin {
   apply(compiler) {
     compiler.hooks.compilation.tap("BannerPlugin", (compilation) => {
@@ -28,19 +78,7 @@ autowatch = ${chunk.name}.autowatch || 0;
 inlets = ${chunk.name}.inlets || 1;
 outlets = ${chunk.name}.outlets || 1;
 
-function bang() {
-    if (typeof ${chunk.name}.bang !== 'function') {
-        return;
-    }
-    return ${chunk.name}.bang.apply(null, arguments);
-}
-
-function anything() {
-    if (typeof ${chunk.name}.anything !== 'function') {
-        return;
-    }
-    return ${chunk.name}.anything.apply(null, arguments);
-}
+${specialFunctions(chunk.name)}
 
                                 `.trim()
                   )
