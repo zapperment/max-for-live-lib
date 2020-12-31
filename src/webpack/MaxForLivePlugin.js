@@ -27,10 +27,14 @@ class MaxForLivePlugin {
                 // versions of webpack produce different boilerplate code,
                 // this may break. I couldn't find a more robust way to
                 // do this.
-                const additionalCodeChunks = old
+                const exportsLine = old
                   .source()
                   .split(/\r?\n/)
-                  .filter((line) => line.match(/^exports\..+ = void 0;$/))[0]
+                  .filter((line) => line.match(/^exports\..+ = void 0;$/))[0];
+                if (!exportsLine) {
+                  return old;
+                }
+                const additionalCodeChunks = exportsLine
                   .match(/exports.[_a-z0-9]+/gi)
                   .map((m) => m.replace(/^exports\.([_a-z0-9]+)$/i, "$1"))
                   .map((exp) =>
