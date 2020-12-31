@@ -1,55 +1,7 @@
 const { ConcatSource } = require("webpack-sources");
 const { Compilation } = require("webpack");
 
-// https://docs.cycling74.com/max8/vignettes/jsbasic#Special_Function_Names
-const specialFuncs = [
-  "bang",
-  "loadbang",
-  "getvalueof",
-  "setvalueof",
-  "save",
-  "notifydeleted",
-];
-const specialFuncsDefToAny = ["msg_int", "msg_float", "list"];
-
-function specialFunction(chunkName, funcName, defaultToAnything = false) {
-  const str = defaultToAnything
-    ? `
-  
-function ${funcName}() {
-  if (typeof ${chunkName}.${funcName} !== 'function') {
-    if (typeof ${chunkName}.anything === 'function') {
-      return ${chunkName}.anything.apply(null, arguments);
-    }
-    return;
-  }
-  return ${chunkName}.${funcName}.apply(null, arguments);
-}
-
-  `
-    : `
-  
-function ${funcName}() {
-  if (typeof ${chunkName}.${funcName} !== 'function') {
-    return;
-  }
-  return ${chunkName}.${funcName}.apply(null, arguments);
-}
-  
-  `;
-  return str.trim();
-}
-
-function specialFunctions(chunkName) {
-  return [
-    specialFuncs
-      .map((funcName) => specialFunction(chunkName, funcName))
-      .join("\n\n"),
-    specialFuncsDefToAny
-      .map((funcName) => specialFunction(chunkName, funcName, true))
-      .join("\n\n"),
-  ].join("\n\n");
-}
+const reservedProps = ["autowatch", "inlets", "outlets"];
 
 class MaxForLivePlugin {
   apply(compiler) {
@@ -66,23 +18,33 @@ class MaxForLivePlugin {
               continue;
             }
             for (const file of chunk.files) {
-              compilation.updateAsset(
-                file,
-                (old) =>
-                  new ConcatSource(
-                    old,
-                    "\n" +
-                      `
-
-autowatch = ${chunk.name}.autowatch || 0;
-inlets = ${chunk.name}.inlets || 1;
-outlets = ${chunk.name}.outlets || 1;
-
-${specialFunctions(chunk.name)}
-
-                                `.trim()
-                  )
-              );
+              compilation.updateAsset(file, (old) => {
+                // PH 2020-12-31:
+                // This is admittedly brittle: We need to figure out the
+                // properties of the exported library object. To do this,
+                // we go through the chunk's source code line by line and
+                // parse the first line that defines exports. If subsequent
+                // versions of webpack produce different boilerplate code,
+                // this may break. I couldn't find a more robust way to
+                // do this.
+                const additionalCodeChunks = old
+                  .source()
+                  .split(/\r?\n/)
+                  .filter((line) => line.match(/^exports\..+ = void 0;$/))[0]
+                  .match(/exports.[a-z0-9]+/gi)
+                  .map((m) => m.replace(/^exports\.([a-z0-9]+)$/i, "$1"))
+                  .map((exp) =>
+                    reservedProps.includes(exp)
+                      ? `${exp} = ${chunk.name}.${exp};`
+                      : `function ${exp}() {
+  return ${chunk.name}.${exp}.apply(null, arguments);
+}`
+                  );
+                return new ConcatSource(
+                  old,
+                  `\n${additionalCodeChunks.join("\n\n")}`
+                );
+              });
             }
           }
         }
