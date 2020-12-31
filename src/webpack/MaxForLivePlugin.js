@@ -31,8 +31,8 @@ class MaxForLivePlugin {
                   .source()
                   .split(/\r?\n/)
                   .filter((line) => line.match(/^exports\..+ = void 0;$/))[0]
-                  .match(/exports.[a-z0-9]+/gi)
-                  .map((m) => m.replace(/^exports\.([a-z0-9]+)$/i, "$1"))
+                  .match(/exports.[_a-z0-9]+/gi)
+                  .map((m) => m.replace(/^exports\.([_a-z0-9]+)$/i, "$1"))
                   .map((exp) =>
                     reservedProps.includes(exp)
                       ? `${exp} = ${chunk.name}.${exp};`
