@@ -1,5 +1,6 @@
 require("dotenv").config();
 const { resolve } = require("path");
+const { readdirSync, lstatSync } = require("fs");
 const MaxForLivePlugin = require("./src/webpack/MaxForLivePlugin");
 
 const { OUTPUT_PATH } = process.env;
@@ -7,11 +8,16 @@ const path = OUTPUT_PATH.startsWith("/")
   ? OUTPUT_PATH
   : resolve(__dirname, OUTPUT_PATH);
 
+const objectsDir = resolve(__dirname, "./src/objects");
+const entry = readdirSync(objectsDir)
+  .filter((curr) => lstatSync(resolve(objectsDir, curr)).isDirectory())
+  .reduce((acc, curr) => ({ ...acc, [curr]: resolve(objectsDir, curr) }), {});
+
 module.exports = {
-  entry: "./src/filterMidiCC.ts",
+  entry,
   output: {
-    library: "filterMidiCC",
-    filename: "filterMidiCC.js",
+    library: "[name]",
+    filename: "[name].js",
     path,
   },
   module: {
@@ -30,6 +36,6 @@ module.exports = {
     minimize: false,
   },
   mode: "production",
-  plugins: [new MaxForLivePlugin({ objectName: "filterMidiCC" })],
+  plugins: [new MaxForLivePlugin()],
   target: "es5",
 };

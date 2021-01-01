@@ -83,6 +83,12 @@ to outlet 2.
 
 ![Patcher example with filterMidiCC js object](docs/images/filterMidiCC.png)
 
+### pickUp
+
+Passes values coming in at inlet 1 on to outlet 2 only if they are at or beyond
+a set threshold value. The threshold value is set through inlet 2. This is
+useful for MIDI controllers.
+
 ## Developing your own js objects
 
 If you want to develop your own js objects, you probably want the build to
