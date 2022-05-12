@@ -1,3 +1,7 @@
+/**
+ * Logs a statement to the Max console
+ * @param messages Arbitrary number of message tokens to be logged
+ */
 export default function log(...messages: any[]) {
 	for (const msg of messages) {
 		if (msg === undefined) {

@@ -8,7 +8,9 @@ declare global {
   const inlet: number;
   class LiveAPI {
     id: number;
-    constructor(path: string);
+    path: string;
+    property: string;
+    constructor(callback: function, path?: string);
   }
   function post(message: string): void;
 }
