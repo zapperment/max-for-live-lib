@@ -9,6 +9,11 @@ declare global {
   class LiveAPI {
     id: number;
     path: string;
+    unquotedpath: string;
+    children: LiveAPI[];
+    mode: number;
+    type: string;
+    info: string;
     property: string;
     constructor(callback: function, path?: string);
   }

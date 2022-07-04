@@ -1,17 +1,9 @@
-import { getLiveTrackIndex, log } from "../../util";
+import Replass from "./Replass";
+
+let replass: Replass;
 
 export function bang() {
-  // @ts-ignore
-  const api = new LiveAPI();
-  const liveTrackIndex = getLiveTrackIndex(api);
-  // @ts-ignore
-  api.goto(observeFiredSlot, `live_set tracks ${liveTrackIndex} fired_slot_index`);
-  /*
-  api.path = `live_set tracks ${liveTrackIndex}`;
-  api.property = "fired_slot_index";
-   */
-}
-
-function observeFiredSlot(...args: any[]) {
-  log("observed fired slot:", ...args)
+  if (!replass) {
+    replass = new Replass();
+  }
 }
