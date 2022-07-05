@@ -9,7 +9,12 @@ interface ObservedProperties {
   signatureDenominator: number;
 }
 
-export default class Replass implements ObservedProperties {
+interface HandlerMethods {
+  handleFiredSlotIndexChange: Function;
+  handleCurrentSongTimeChange: Function;
+}
+
+export default class Replass implements ObservedProperties, HandlerMethods {
   firedSlotIndex!: number;
   clipTriggerQuantization!: number;
   isPlaying!: number;
@@ -17,16 +22,18 @@ export default class Replass implements ObservedProperties {
   signatureNumerator!: number;
   signatureDenominator!: number;
 
+  prevBeat: number = 0;
+
   constructor() {
     const observedProperties: {
       path: string;
       property: keyof ObservedProperties;
-      handler?: Function;
+      handler?: keyof HandlerMethods;
     }[] = [
       {
         path: `live_set tracks ${getLiveTrackIndex()} fired_slot_index`,
         property: "firedSlotIndex",
-        handler: this.handleFiredSlotIndexChange,
+        handler: "handleFiredSlotIndexChange",
       },
       {
         path: "live_set clip_trigger_quantization",
@@ -39,6 +46,7 @@ export default class Replass implements ObservedProperties {
       {
         path: "live_set current_song_time",
         property: "currentSongTime",
+        handler: "handleCurrentSongTimeChange",
       },
       {
         path: "live_set signature_numerator",
@@ -53,7 +61,7 @@ export default class Replass implements ObservedProperties {
       this[property] = observe(path, (value) => {
         this[property] = value;
         if (handler) {
-          handler();
+          this[handler]();
         }
       });
     }
@@ -61,5 +69,13 @@ export default class Replass implements ObservedProperties {
 
   handleFiredSlotIndexChange() {
     log("Handling the shmandling!!1!");
+  }
+
+  handleCurrentSongTimeChange() {
+    const nextBeat = Math.floor(this.currentSongTime);
+    if (nextBeat > this.prevBeat) {
+      this.prevBeat = nextBeat;
+      log("The beat:", nextBeat);
+    }
   }
 }
