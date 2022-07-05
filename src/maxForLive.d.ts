@@ -15,6 +15,7 @@ declare global {
     type: string;
     info: string;
     property: string;
+    get: Function;
     constructor(callback: function, path?: string);
   }
   function post(message: string): void;

@@ -1,5 +1,4 @@
-import { isEqual } from "lodash";
-import memoizeOne from "memoize-one";
+import log from "./log";
 
 export default function observe(
   path: string,
@@ -9,15 +8,12 @@ export default function observe(
   if (!objectPath || !property) {
     throw new Error(`Invalid path: ${path}`);
   }
-  const observedObject = new LiveAPI(
-    memoizeOne(([label, value]) => {
-      if (label !== property) {
-        return;
-      }
-      callback(value);
-    }, isEqual),
-    objectPath
-  );
+  const observedObject = new LiveAPI(([label, value]: [string, number]) => {
+    if (label !== property) {
+      return;
+    }
+    callback(value);
+  }, objectPath);
   observedObject.property = property;
-  return observedObject;
+  return observedObject.get(property)[0];
 }
