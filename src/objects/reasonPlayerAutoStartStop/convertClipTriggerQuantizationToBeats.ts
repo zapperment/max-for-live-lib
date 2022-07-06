@@ -42,15 +42,19 @@ export default function (
       return 0.5;
     // 10 = 1/8T
     case 10:
-      return 1/3;
+      return 1 / 3;
     // 11 = 1/16
     case 11:
       return 0.25;
     // 12 = 1/16T
     case 12:
-      return 0.5/3;
+      return 0.5 / 3;
     // 13 = 1/32
     case 13:
       return 0.125;
+    default:
+      throw new Error(
+        `Invalid clip trigger quantization: ${clipTriggerQuantization}`
+      );
   }
 }
