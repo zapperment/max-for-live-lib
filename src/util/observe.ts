@@ -1,5 +1,3 @@
-import log from "./log";
-
 export default function observe(
   path: string,
   callback: (value: number) => void
