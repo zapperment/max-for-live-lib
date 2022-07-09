@@ -1,6 +1,6 @@
-export const autowatch = 1;
-export const inlets = 1;
-export const outlets = 2;
+autowatch = 1;
+inlets = 1;
+outlets = 2;
 
 const CHANNEL_1_CC = 176;
 

@@ -1,5 +1,7 @@
-import { getLiveTrackIndex, getProperty, log, observe } from "../../util";
+import { getLiveTrackIndex, getProperty, outLog, observe } from "../../util";
 import convertClipTriggerQuantizationToBeats from "./convertClipTriggerQuantizationToBeats";
+
+const OFFSET = 0.1;
 
 interface ObservedProperties {
   firedSlotIndex: number;
@@ -23,11 +25,13 @@ export default class Replass implements ObservedProperties, HandlerMethods {
   signatureNumerator!: number;
   signatureDenominator!: number;
 
-  private prevBeat: number = 0;
   private nextClipStartTime: number = Number.MAX_SAFE_INTEGER;
   private nextClipStopTime: number = Number.MAX_SAFE_INTEGER;
+  private liveTrackIndex;
 
   constructor() {
+    this.liveTrackIndex = getLiveTrackIndex();
+    outlet(2, this.liveTrackIndex);
     const observedProperties: {
       path: string;
       property: keyof ObservedProperties;
@@ -88,39 +92,38 @@ export default class Replass implements ObservedProperties, HandlerMethods {
       clipTriggerQuantizationInBeats;
     if (this.firedSlotIndex !== -2) {
       const hasClip = getProperty(
-        `live_set tracks ${getLiveTrackIndex()} clip_slots ${
-          this.firedSlotIndex
-        } has_clip`
+        `live_set tracks ${this.liveTrackIndex} clip_slots ${this.firedSlotIndex} has_clip`
       );
       if (hasClip) {
         // clip start was triggered
-        log("Slot start fired:", this.firedSlotIndex);
-        this.nextClipStartTime = nextQuantizationSpanTime;
+        this.nextClipStartTime = nextQuantizationSpanTime - OFFSET;
         this.nextClipStopTime = Number.MAX_SAFE_INTEGER;
-        log("Next clip start time:", this.nextClipStartTime);
+        outLog(
+          3,
+          `Next clip slot ${this.firedSlotIndex} start time: ${this.nextClipStartTime}`
+        );
         return;
       }
     }
     // clip stop was triggerd
-    log("Slot stop fired");
-    this.nextClipStopTime = nextQuantizationSpanTime;
+    this.nextClipStopTime = nextQuantizationSpanTime - OFFSET;
     this.nextClipStartTime = Number.MAX_SAFE_INTEGER;
-    log("Next clip stop time:", this.nextClipStopTime);
+    outLog(
+      3,
+      `Next clip slot ${this.firedSlotIndex} stop time: ${this.nextClipStopTime}`
+    );
   }
 
   handleCurrentSongTimeChange() {
-    const nextBeat = Math.floor(this.currentSongTime);
-    if (nextBeat > this.prevBeat) {
-      this.prevBeat = nextBeat;
-      log("The beat:", nextBeat);
-    }
     if (this.currentSongTime > this.nextClipStartTime) {
+      outlet(0, "bang");
       this.nextClipStartTime = Number.MAX_SAFE_INTEGER;
-      log("*** CLIP STARTED ***");
+      outLog(3, "*** CLIP STARTED ***");
     }
     if (this.currentSongTime > this.nextClipStopTime) {
+      outlet(1, "bang");
       this.nextClipStopTime = Number.MAX_SAFE_INTEGER;
-      log("*** CLIP STOPPED ***");
+      outLog(3, "*** CLIP STOPPED ***");
     }
   }
 }

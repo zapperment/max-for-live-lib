@@ -1,6 +1,6 @@
-export const autowatch = 1;
-export const inlets = 2;
-export const outlets = 1;
+autowatch = 1;
+inlets = 2;
+outlets = 1;
 
 let pickupValue = 127;
 let recentlySet = false;
