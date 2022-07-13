@@ -1,4 +1,10 @@
-import { getLiveTrackIndex, getProperty, outLog, observe } from "../../util";
+import {
+  getLiveTrackIndex,
+  getNumberProperty,
+  outLog,
+  observe,
+} from "../../util";
+
 import convertClipTriggerQuantizationToBeats from "./convertClipTriggerQuantizationToBeats";
 
 const OFFSET = 0.1;
@@ -13,6 +19,7 @@ interface ObservedProperties {
 }
 
 interface HandlerMethods {
+  handleIsPlayingChange: Function;
   handleFiredSlotIndexChange: Function;
   handleCurrentSongTimeChange: Function;
 }
@@ -27,11 +34,10 @@ export default class Replass implements ObservedProperties, HandlerMethods {
 
   private nextClipStartTime: number = Number.MAX_SAFE_INTEGER;
   private nextClipStopTime: number = Number.MAX_SAFE_INTEGER;
-  private liveTrackIndex;
 
   constructor() {
-    this.liveTrackIndex = getLiveTrackIndex();
-    outlet(2, this.liveTrackIndex);
+    const liveTrackIndex = getLiveTrackIndex();
+    outlet(2, liveTrackIndex);
     const observedProperties: {
       path: string;
       property: keyof ObservedProperties;
@@ -49,6 +55,7 @@ export default class Replass implements ObservedProperties, HandlerMethods {
       {
         path: "live_set is_playing",
         property: "isPlaying",
+        handler: "handleIsPlayingChange",
       },
       {
         path: "live_set current_song_time",
@@ -91,8 +98,10 @@ export default class Replass implements ObservedProperties, HandlerMethods {
       elapsedQuantizationSpans * clipTriggerQuantizationInBeats +
       clipTriggerQuantizationInBeats;
     if (this.firedSlotIndex !== -2) {
-      const hasClip = getProperty(
-        `live_set tracks ${this.liveTrackIndex} clip_slots ${this.firedSlotIndex} has_clip`
+      const hasClip = getNumberProperty(
+        `live_set tracks ${getLiveTrackIndex()} clip_slots ${
+          this.firedSlotIndex
+        } has_clip`
       );
       if (hasClip) {
         // clip start was triggered
@@ -105,7 +114,7 @@ export default class Replass implements ObservedProperties, HandlerMethods {
         return;
       }
     }
-    // clip stop was triggerd
+    // clip stop was triggered
     this.nextClipStopTime = nextQuantizationSpanTime - OFFSET;
     this.nextClipStartTime = Number.MAX_SAFE_INTEGER;
     outLog(
@@ -118,12 +127,19 @@ export default class Replass implements ObservedProperties, HandlerMethods {
     if (this.currentSongTime > this.nextClipStartTime) {
       outlet(0, "bang");
       this.nextClipStartTime = Number.MAX_SAFE_INTEGER;
-      outLog(3, "*** CLIP STARTED ***");
+      outLog(3, "*** CLIP STARTED! ***");
     }
     if (this.currentSongTime > this.nextClipStopTime) {
       outlet(1, "bang");
       this.nextClipStopTime = Number.MAX_SAFE_INTEGER;
-      outLog(3, "*** CLIP STOPPED ***");
+      outLog(3, "*** CLIP STOPPED! ***");
     }
+  }
+
+  handleIsPlayingChange() {
+    outLog(
+      3,
+      `Is it playing? ${this.isPlaying}`
+    );
   }
 }

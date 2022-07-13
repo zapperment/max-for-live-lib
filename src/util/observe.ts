@@ -4,7 +4,7 @@ export default function observe(
   path: string,
   callback: (value: number) => void
 ) {
-  const [ objectPath, property] = splitPath(path)
+  const [objectPath, property] = splitPath(path);
   const observedObject = new LiveAPI(([label, value]: [string, number]) => {
     if (label !== property) {
       return;
