@@ -94,6 +94,12 @@ useful for MIDI controllers.
 When this JS object receives a bang, it calculates the musical time in beats that
 a clip that has been fired will start playing.
 
+### firedSlotStartOrStop
+
+When this JS object receives an integer value as returned by the slot property
+*fired_slot_index*, it determines if that value means a clip will start playing
+or the track will stop playing, and issues a bang to outlet 1 or 2, accordingly.
+
 ## Developing your own js objects
 
 If you want to develop your own js objects, you probably want the build to
