@@ -89,6 +89,11 @@ Passes values coming in at inlet 1 on to outlet 2 only if they are at or beyond
 a set threshold value. The threshold value is set through inlet 2. This is
 useful for MIDI controllers.
 
+### getNextTriggerTime
+
+When this JS object receives a bang, it calculates the musical time in beats that
+a clip that has been fired will start playing.
+
 ## Developing your own js objects
 
 If you want to develop your own js objects, you probably want the build to
