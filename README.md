@@ -98,7 +98,9 @@ a clip that has been fired will start playing.
 
 When this JS object receives an integer value as returned by the slot property
 *fired_slot_index*, it determines if that value means a clip will start playing
-or the track will stop playing, and issues a bang to outlet 1 or 2, accordingly.
+or the track will stop playing, and issues a bang to outlet 1 or 3, accordingly.
+
+If no slot has been fired, a bang is sent to outlet 2.
 
 ## Developing your own js objects
 
