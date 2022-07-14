@@ -27,7 +27,8 @@ declare global {
     getstring: Function;
     goto: Function;
     set: Function;
-    constructor(callback: function, path?: string);
+    constructor(callback: Function, pathOrId: string | (string|number)[]);
+    constructor(pathOrId: string | (string|number)[]);
   }
   function post(message: string): void;
 }
