@@ -137,9 +137,6 @@ export default class Replass implements ObservedProperties, HandlerMethods {
   }
 
   handleIsPlayingChange() {
-    outLog(
-      3,
-      `Is it playing? ${this.isPlaying}`
-    );
+    outLog(3, `Is it playing? ${this.isPlaying}`);
   }
 }

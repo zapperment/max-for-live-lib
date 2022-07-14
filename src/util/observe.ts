@@ -1,3 +1,5 @@
+import memoizeOne from "memoize-one";
+import { isEqual } from "lodash";
 import splitPath from "./splitPath";
 
 export default function observe(
@@ -5,12 +7,12 @@ export default function observe(
   callback: (value: number) => void
 ) {
   const [objectPath, property] = splitPath(path);
-  const observedObject = new LiveAPI(([label, value]: [string, number]) => {
+  const observedObject = new LiveAPI(memoizeOne(([label, value]: [string, number]) => {
     if (label !== property) {
       return;
     }
     callback(value);
-  }, objectPath);
+  },isEqual), objectPath);
   observedObject.property = property;
   return observedObject.get(property)[0];
 }

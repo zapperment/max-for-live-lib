@@ -25,6 +25,7 @@ declare global {
     property: string;
     get: Function;
     getstring: Function;
+    goto: Function;
     set: Function;
     constructor(callback: function, path?: string);
   }
