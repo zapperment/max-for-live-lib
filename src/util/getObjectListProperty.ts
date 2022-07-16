@@ -1,6 +1,6 @@
 import splitPath from "./splitPath";
 
-export default function getProperty(path: string) {
+export default function getObjectListProperty(path: string): LiveAPI[] {
   const [objectPath, property] = splitPath(path);
   return new LiveAPI(objectPath)
     .get(property)
