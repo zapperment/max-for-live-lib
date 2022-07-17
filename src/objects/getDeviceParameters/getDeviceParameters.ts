@@ -1,15 +1,20 @@
-import { getObjectListProperty, log } from "../../util";
+import { getObjectById, getObjectListProperty } from "../../util";
 
 autowatch = 1;
 outlets = 3;
+
+setinletassist(0, "ID: the ID of a device");
+setoutletassist(0, "String: a string to create a message to initialize a live.menu's range attribute");
+setoutletassist(1, "List: parameter names");
+setoutletassist(2, "List: parameter IDs");
 
 // M4L can't handle more than 9 changeable args in a message
 // let's not make things too complicated and leave it at that
 const MAX_ITEMS = 9;
 
-export function bang() {
+export function id(id: number) {
   const parameters = getObjectListProperty(
-    "live_set tracks 0 devices 1 parameters"
+    `${getObjectById(id).path} parameters`
   ).slice(0, MAX_ITEMS);
   outlet(0, [
     "set",
