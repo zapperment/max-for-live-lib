@@ -102,6 +102,21 @@ or the track will stop playing, and issues a bang to outlet 1 or 3, accordingly.
 
 If no slot has been fired, a bang is sent to outlet 2.
 
+### anySlotPlaying
+
+When this JS object receives a bang, it checks if any slot in the device's track
+is playing. It sends a number to outlet 1 (0: no slot is playing, otherwise 1).
+It also sends a bang to outlet 1 if any slot is playing or a bang to outlet 2
+if no slot is playing.
+
+### getDeviceParameters
+
+When this JS object receives the ID of a Live device, it sends a string to
+initialize the range arof a *live.menu* object with a message to outlet 1,
+a list of parameter names to outlet 2 and a list of IDs of the device 
+parameters to outlet 3.
+
+
 ## Developing your own js objects
 
 If you want to develop your own js objects, you probably want the build to
