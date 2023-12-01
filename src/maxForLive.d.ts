@@ -24,11 +24,12 @@ declare global {
     info: string;
     property: string;
     get: Function;
+    getcount: Function;
     getstring: Function;
     goto: Function;
     set: Function;
-    constructor(callback: Function, pathOrId: string | (string|number)[]);
-    constructor(pathOrId: string | (string|number)[]);
+    constructor(callback: Function, pathOrId: string | (string | number)[]);
+    constructor(pathOrId: string | (string | number)[]);
   }
   function post(message: string): void;
 }

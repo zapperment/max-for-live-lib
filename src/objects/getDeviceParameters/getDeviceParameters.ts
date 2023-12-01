@@ -1,10 +1,13 @@
-import { getObjectById, getObjectListProperty } from "../../util";
+import { getObjectById, getObjectListProperty, log } from "../../util";
 
 autowatch = 1;
 outlets = 3;
 
 setinletassist(0, "ID: the ID of a device");
-setoutletassist(0, "String: a string to create a message to initialize a live.menu's range attribute");
+setoutletassist(
+  0,
+  "String: a string to create a message to initialize a live.menu's range attribute"
+);
 setoutletassist(1, "List: parameter names");
 setoutletassist(2, "List: parameter IDs");
 
@@ -13,9 +16,11 @@ setoutletassist(2, "List: parameter IDs");
 const MAX_ITEMS = 9;
 
 export function id(id: number) {
-  const parameters = getObjectListProperty(
-    `${getObjectById(id).path} parameters`
-  ).slice(0, MAX_ITEMS);
+  log("[getDeviceParameters] id:", id);
+  // need to slice off enclosing double quotes that Max adds to the path of the object
+  const path = `${getObjectById(id).path.slice(1, -1)} parameters`;
+  log("[getDeviceParameters] path:", path);
+  const parameters = getObjectListProperty(path).slice(0, MAX_ITEMS);
   outlet(0, [
     "set",
     "_parameter_range",
