@@ -11,8 +11,11 @@ setoutletassist(
 setoutletassist(1, "List: device IDs");
 
 export function bang() {
+  const thisDeviceName = new LiveAPI("this_device").get("name")[0];
   const path = `live_set tracks ${getLiveTrackIndex()} devices`;
-  const devices = getObjectListProperty(path);
+  const devices = getObjectListProperty(path).filter(
+    (device) => device.get("name")[0] !== thisDeviceName
+  );
   outlet(
     1,
     devices.map((device) => device.id)
