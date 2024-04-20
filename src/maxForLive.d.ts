@@ -1,3 +1,4 @@
+import type { Id } from "./types";
 export {};
 
 declare global {
@@ -23,13 +24,14 @@ declare global {
     type: string;
     info: string;
     property: string;
+    call: Function;
     get: Function;
     getcount: Function;
     getstring: Function;
     goto: Function;
     set: Function;
-    constructor(callback: Function, pathOrId: string | (string | number)[]);
-    constructor(pathOrId: string | (string | number)[]);
+    constructor(callback?: Function, pathOrId: string | Id);
+    constructor(pathOrId?: string | Id);
   }
   function post(message: string): void;
 }
