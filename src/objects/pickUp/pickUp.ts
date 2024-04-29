@@ -7,6 +7,9 @@ let recentlySet = false;
 let direction: "up" | "down" = "up";
 let isOpen = false;
 
+// TODO: remove, only for testing multiple occurrences
+export function bang() {}
+
 export function msg_int(value: number) {
   if (inlet === 1) {
     pickupValue = value;
