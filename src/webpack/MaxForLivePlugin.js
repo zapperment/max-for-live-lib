@@ -3,35 +3,15 @@ const { Compilation } = require("webpack");
 
 const reservedProps = ["autowatch", "inlets", "outlets"];
 
-function getObjectName(assetName) {
-  const lastDotIndex = assetName.lastIndexOf(".");
-  return assetName.substring(0, lastDotIndex);
-}
-
-function injectThis(assetName, asset) {
-  const objectName = getObjectName(assetName);
-  const sourceCode = asset.source();
-  const regExp = new RegExp(
-    `(return ${objectName}\\..+\\.apply\\()null(, arguments\\);)`
-  );
-  // TODO: replace all occurrenctes
-  return sourceCode.replace(regExp, `$1this$2`);
-}
-
 class MaxForLivePlugin {
   apply(compiler) {
     compiler.hooks.compilation.tap("MaxForLivePlugin", (compilation) => {
-      compilation.hooks.afterProcessAssets.tap("MaxForLivePlugin", () => {
-        for (const [assetName, asset] of Object.entries(compilation.assets)) {
-          console.log(injectThis(assetName, asset));
-        }
-      });
       compilation.hooks.processAssets.tap(
         {
           name: "MaxForLivePlugin",
           stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONS,
         },
-        (result) => {
+        () => {
           for (const chunk of compilation.chunks) {
             // only add to initial chunk
             if (!chunk.canBeInitial()) {
@@ -61,7 +41,7 @@ class MaxForLivePlugin {
                     reservedProps.includes(exp)
                       ? `${exp} = ${chunk.name}.${exp};`
                       : `function ${exp}() {
-  return ${chunk.name}.${exp}.apply(null, arguments);
+  return ${chunk.name}.${exp}.apply(this, arguments);
 }`
                   );
                 return new ConcatSource(

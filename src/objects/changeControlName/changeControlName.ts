@@ -10,10 +10,10 @@ setoutletassist(
 );
 
 export function change(scriptingName: string, ...shortNameSegments: string[]) {
-  log(`version 8`);
+  log(`version 10`);
   log(`scripting name: ${scriptingName} `);
   log(`short name: ${shortNameSegments.join(" ")} `);
   // @ts-ignore
-  log(`patcher name: ${jsthis.patcher.name}`);
+  log(`patcher name: ${this.patcher.name}`);
   outlet(0, "bang");
 }
