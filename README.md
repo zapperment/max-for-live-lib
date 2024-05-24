@@ -109,6 +109,26 @@ is playing. It sends a number to outlet 1 (0: no slot is playing, otherwise 1).
 It also sends a bang to outlet 1 if any slot is playing or a bang to outlet 2
 if no slot is playing.
 
+### mkIIIDisplay
+
+Write text to the display of the Novation SL MkIII MIDI keyboard. Send a message 
+to the inlet like this:
+
+`send [column] [message]`
+
+* *column* is the column (0-7) in which to write the text (number)
+* *message* is text to write (list of symbols)
+
+The text is written in the top row, above the current knob value. Keep in mind
+that the text needs to be short, around 9 characters, lest it is truncated with
+ellipses.
+
+#### Example
+
+To write the text "hi there" above knob 1:
+
+`send 0 hi there` 
+
 ## Developing your own js objects
 
 If you want to develop your own js objects, you probably want the build to
