@@ -5,7 +5,7 @@ const reservedProps = ["autowatch", "inlets", "outlets"];
 
 class MaxForLivePlugin {
   apply(compiler) {
-    compiler.hooks.compilation.tap("BannerPlugin", (compilation) => {
+    compiler.hooks.compilation.tap("MaxForLivePlugin", (compilation) => {
       compilation.hooks.processAssets.tap(
         {
           name: "MaxForLivePlugin",
@@ -41,7 +41,7 @@ class MaxForLivePlugin {
                     reservedProps.includes(exp)
                       ? `${exp} = ${chunk.name}.${exp};`
                       : `function ${exp}() {
-  return ${chunk.name}.${exp}.apply(null, arguments);
+  return ${chunk.name}.${exp}.apply(this, arguments);
 }`
                   );
                 return new ConcatSource(
