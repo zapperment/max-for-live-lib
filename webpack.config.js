@@ -1,4 +1,5 @@
 require("dotenv").config();
+
 const { resolve } = require("path");
 const { readdirSync, lstatSync } = require("fs");
 const MaxForLivePlugin = require("./src/webpack/MaxForLivePlugin");
