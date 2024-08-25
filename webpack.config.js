@@ -1,4 +1,5 @@
 require("dotenv").config();
+
 const { resolve } = require("path");
 const { readdirSync, lstatSync } = require("fs");
 const MaxForLivePlugin = require("./src/webpack/MaxForLivePlugin");
@@ -37,5 +38,5 @@ module.exports = {
   },
   mode: "production",
   plugins: [new MaxForLivePlugin()],
-  target: "es5",
+  target: "node4",
 };
