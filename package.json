@@ -27,5 +27,6 @@
   "bugs": {
     "url": "https://github.com/zapperment/max-for-live-lib/issues"
   },
-  "homepage": "https://github.com/zapperment/max-for-live-lib#readme"
+  "homepage": "https://github.com/zapperment/max-for-live-lib#readme",
+  "packageManager": "yarn@4.4.1"
 }
