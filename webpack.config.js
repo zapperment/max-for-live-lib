@@ -37,5 +37,5 @@ module.exports = {
   },
   mode: "production",
   plugins: [new MaxForLivePlugin()],
-  target: "es5",
+  target: "node4",
 };
