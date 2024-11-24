@@ -1,4 +1,10 @@
-import { log, getControlSurfaceId, getControlSurfaceNames } from "../../util";
+import type { Id } from "../../types";
+import {
+  log,
+  getControlSurfaceId,
+  getControlSurfaceNames,
+  getObjectById,
+} from "../../util";
 
 let controlSurfaceName: string | null = null;
 let controlName: string | null = null;
@@ -8,11 +14,27 @@ export function bang() {
     return;
   }
   const controlSurfaceId = getControlSurfaceId(controlSurfaceName);
-  const control = new LiveAPI(controlSurfaceId).call(
+  const controlId: Id = new LiveAPI(controlSurfaceId).call(
     "get_control",
     controlName,
   );
-  outlet(0, control);
+  outlet(0, controlId);
+}
+
+export function observe() {
+  if (!controlSurfaceName || !controlName) {
+    return;
+  }
+  const controlSurfaceId = getControlSurfaceId(controlSurfaceName);
+  const controlId: Id = new LiveAPI(controlSurfaceId).call(
+    "get_control",
+    controlName,
+  );
+  const control = new LiveAPI((value: any) => {
+    outlet(0, value.slice(1));
+  });
+  control.id = controlId[1];
+  control.property = "value";
 }
 
 export function set_surface(nextControlSurfaceName: string) {

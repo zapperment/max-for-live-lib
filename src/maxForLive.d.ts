@@ -31,6 +31,7 @@ declare global {
     goto: Function;
     set: Function;
     constructor(callback?: Function, pathOrId: string | Id);
+    constructor(callback?: Function);
     constructor(pathOrId?: string | Id);
   }
   function post(message: string): void;
