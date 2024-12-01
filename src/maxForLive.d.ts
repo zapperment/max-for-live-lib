@@ -23,8 +23,9 @@ declare global {
     mode: number;
     type: string;
     info: string;
-    property: string;
+    property: string | null;
     call: Function;
+    freepeer: Function;
     get: Function;
     getcount: Function;
     getstring: Function;

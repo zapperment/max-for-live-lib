@@ -64,6 +64,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/core-js@npm:^2.5.8":
+  version: 2.5.8
+  resolution: "@types/core-js@npm:2.5.8"
+  checksum: 10/58c4b86102b13b778d3631d38913c788ef7f688d99fbd741f6241a9cedc7e986e670011bdccd58b32e28e97b9c0fa6fffedef6ba0f670a005b321788a5a01a65
+  languageName: node
+  linkType: hard
+
 "@types/estree@npm:^1.0.5":
   version: 1.0.5
   resolution: "@types/estree@npm:1.0.5"
@@ -435,6 +442,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"core-js@npm:^3.39.0":
+  version: 3.39.0
+  resolution: "core-js@npm:3.39.0"
+  checksum: 10/a3d34e669783dfc878e545f1983f60d9ff48a3867cd1d7ff8839b849e053002a208c7c14a5ca354b8e0b54982901e2f83dc87c3d9b95de0a94b4071d1c74e5f6
+  languageName: node
+  linkType: hard
+
 "cross-spawn@npm:^7.0.3":
   version: 7.0.3
   resolution: "cross-spawn@npm:7.0.3"
@@ -736,6 +750,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "max-for-live-lib@workspace:."
   dependencies:
+    "@types/core-js": "npm:^2.5.8"
+    core-js: "npm:^3.39.0"
     dotenv: "npm:^8.2.0"
     prettier: "npm:^3.3.3"
     ts-loader: "npm:^9.5.1"
