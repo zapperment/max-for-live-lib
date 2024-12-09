@@ -13,7 +13,19 @@ enum LightType {
   off,
 }
 
-export function observe_clip_slot_content() {}
+export function print_rgb_values() {
+  const api = new LiveAPI("live_set");
+  for (let rowIndex = 0; rowIndex < 5; rowIndex++) {
+    for (let colIndex = 0; colIndex < 14; colIndex++) {
+      api.goto(`live_set tracks ${colIndex} clip_slots ${rowIndex} clip`);
+      const colourIndex = api.get("color_index");
+      const colourRgb = api.get("color");
+      const row = rowIndex + 1;
+      const col = colIndex + 1;
+      log(`${colourIndex},${colourRgb},${row},${col}`);
+    }
+  }
+}
 
 const apiMan = new ApiManager();
 
@@ -263,6 +275,139 @@ export function light_em_up(palette: number) {
       colourIndices[36] = 55; // fuchsia rose
       colourIndices[37] = 103; // eclipse
       break;
+
+    // palette 5: named colours from Novation palette
+    case 5:
+      colourIndices[0] = 0; // black
+      colourIndices[1] = 1; // dark grey / white half
+      colourIndices[2] = 2; // grey
+      colourIndices[3] = 3; // white
+
+      colourIndices[8] = 8; // off white
+      colourIndices[9] = 12; // cream
+
+      colourIndices[11] = 97; // yellow
+      colourIndices[12] = 125; // yellow half
+
+      colourIndices[14] = 17; // dark yellow
+      colourIndices[15] = 19; // dark yellow half
+
+      colourIndices[16] = 96; // amber
+      colourIndices[17] = 14; // amber half
+
+      colourIndices[19] = 9; // orange
+      colourIndices[20] = 11; // orange half
+
+      colourIndices[22] = 84; // dark orange
+
+      colourIndices[24] = 5; // red
+      colourIndices[25] = 7; // red half
+
+      colourIndices[32] = 53; // purple
+      colourIndices[33] = 55; // purple half
+
+      colourIndices[35] = 52; // violet
+
+      colourIndices[40] = 37; // light blue
+      colourIndices[41] = 39; // light blue half
+
+      colourIndices[43] = 41; // blue
+      colourIndices[44] = 43; // blue half
+
+      colourIndices[46] = 49; // dark blue
+      colourIndices[47] = 51; // dark blue half
+
+      colourIndices[48] = 77; // aqua
+
+      colourIndices[51] = 29; // mint
+      colourIndices[52] = 31; // mint half
+
+      colourIndices[56] = 87; // pale green
+      colourIndices[57] = 89; // pale green half
+
+      colourIndices[59] = 21; // green
+      colourIndices[60] = 27; // green half
+      break;
+
+    // palette 6: hackable colours
+    case 6:
+      colourIndices[0] = 74;
+      colourIndices[1] = 84;
+      colourIndices[2] = 76;
+      colourIndices[3] = 69;
+      colourIndices[4] = 99;
+      colourIndices[5] = 19;
+      colourIndices[6] = 5;
+      colourIndices[7] = 71;
+
+      colourIndices[8] = 15;
+      colourIndices[9] = 18;
+      colourIndices[10] = 11;
+      colourIndices[11] = 73;
+      colourIndices[12] = 58;
+      colourIndices[13] = 111;
+      colourIndices[14] = 13;
+      colourIndices[15] = 4;
+
+      colourIndices[16] = 88;
+      colourIndices[17] = 65;
+      colourIndices[18] = 110;
+      colourIndices[19] = 46;
+      colourIndices[20] = 107;
+      colourIndices[21] = 102;
+      colourIndices[22] = 79;
+      colourIndices[23] = 117;
+
+      colourIndices[24] = 119;
+      colourIndices[25] = 94;
+      colourIndices[26] = 44;
+      colourIndices[27] = 100;
+      colourIndices[28] = 78;
+      colourIndices[29] = 127;
+      colourIndices[30] = 96;
+      colourIndices[31] = 87;
+
+      colourIndices[32] = 64;
+      colourIndices[33] = 90;
+      colourIndices[34] = 97;
+      colourIndices[35] = 126;
+      colourIndices[36] = 80;
+      colourIndices[37] = 10;
+      colourIndices[38] = 16;
+      colourIndices[39] = 105;
+
+      colourIndices[40] = 14;
+      colourIndices[41] = 108;
+      colourIndices[42] = 70;
+      colourIndices[43] = 39;
+      colourIndices[44] = 47;
+      colourIndices[45] = 59;
+      colourIndices[46] = 121;
+      colourIndices[47] = 57;
+
+      colourIndices[48] = 25;
+      colourIndices[49] = 112;
+      colourIndices[50] = 81;
+      colourIndices[51] = 8;
+      colourIndices[52] = 77;
+      colourIndices[53] = 93;
+      colourIndices[54] = 48;
+      colourIndices[55] = 43;
+
+      colourIndices[56] = 103;
+      colourIndices[57] = 104;
+      colourIndices[58] = 55;
+      colourIndices[59] = 66;
+      colourIndices[60] = 95;
+      colourIndices[61] = 86;
+      colourIndices[62] = 28;
+      colourIndices[63] = 115;
+
+    case 7:
+      colourIndices[0] = 116;
+      colourIndices[1] = 3;
+      colourIndices[2] = 33;
+      colourIndices[3] = 114;
   }
   let padIndex = 0;
   for (let row = 80; row >= 10; row -= 10) {
