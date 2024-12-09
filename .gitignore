@@ -1,5 +1,19 @@
+# Node.js
 node_modules
+
+# IntelliJ
 .idea
 *.iml
+
+# Build config and artefacts
 dist
 .env
+
+# Yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

@@ -1,4 +1,4 @@
-import "../../polyfills/find";
+import "core-js/actual/array/find";
 import { getLiveTrackIndex, getObjectListProperty } from "../../util";
 
 autowatch = 1;
@@ -11,7 +11,7 @@ setoutletassist(2, "Bang: no slot is playing");
 
 export function bang() {
   const clipSlots = getObjectListProperty(
-    `live_set tracks ${getLiveTrackIndex()} clip_slots`
+    `live_set tracks ${getLiveTrackIndex()} clip_slots`,
   );
   const anySlotPlaying =
     clipSlots.find((clipSlot: LiveAPI) => clipSlot.get("is_playing")[0] > 0) !==
