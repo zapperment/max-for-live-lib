@@ -85,6 +85,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/maxmsp@npm:^1.0.13":
+  version: 1.0.13
+  resolution: "@types/maxmsp@npm:1.0.13"
+  checksum: 10/80f540e295a68f3caa7108171efbaa9a8d753356e61a8a4b720a1eb07e7549c1b0824934e0a6b6337d40d30f2b446defd9fd3b2ce6599c8b8ae32ff3e3e4080e
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:*":
   version: 14.14.16
   resolution: "@types/node@npm:14.14.16"
@@ -751,6 +758,7 @@ __metadata:
   resolution: "max-for-live-lib@workspace:."
   dependencies:
     "@types/core-js": "npm:^2.5.8"
+    "@types/maxmsp": "npm:^1.0.13"
     core-js: "npm:^3.39.0"
     dotenv: "npm:^8.2.0"
     prettier: "npm:^3.3.3"
