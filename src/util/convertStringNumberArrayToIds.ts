@@ -1,4 +1,3 @@
-import type { Id } from "../types";
 export default function convertStringNumberArrayToIds(
   input: (string | number)[]
 ): Id[] {
