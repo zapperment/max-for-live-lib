@@ -442,13 +442,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js-pure@npm:^3.39.0":
-  version: 3.39.0
-  resolution: "core-js-pure@npm:3.39.0"
-  checksum: 10/43922b14f9c928ec958fc444e70cfb429a21e3f842f03f67810faf29a99780fec20dc688f65ab3780d2b8a2f1ae8287464ec5adb396826e0374a4f2907b4b383
-  languageName: node
-  linkType: hard
-
 "core-js@npm:^3.39.0":
   version: 3.39.0
   resolution: "core-js@npm:3.39.0"
@@ -759,7 +752,6 @@ __metadata:
   dependencies:
     "@types/core-js": "npm:^2.5.8"
     core-js: "npm:^3.39.0"
-    core-js-pure: "npm:^3.39.0"
     dotenv: "npm:^8.2.0"
     prettier: "npm:^3.3.3"
     ts-loader: "npm:^9.5.1"
