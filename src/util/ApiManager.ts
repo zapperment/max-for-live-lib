@@ -1,4 +1,3 @@
-import log from "./log";
 import ManagedApi from "./ManagedApi";
 
 export default class ApiManager {
