@@ -4,6 +4,7 @@ import { getLiveTrackIndex, getObjectListProperty } from "../../util";
 autowatch = 1;
 inlets = 1;
 outlets = 3;
+
 setinletassist(0, "Bang: trigger check if any slots is playing");
 setoutletassist(0, "Number: 0 is no slot is playing, otherwise 1");
 setoutletassist(1, "Bang: any slot is playing");
