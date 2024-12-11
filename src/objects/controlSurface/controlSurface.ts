@@ -1,10 +1,4 @@
-import type { Id } from "../../types";
-import {
-  log,
-  getControlSurfaceId,
-  getControlSurfaceNames,
-  getObjectById,
-} from "../../util";
+import { getControlSurfaceId, getControlSurfaceNames } from "../../util";
 
 let controlSurfaceName: string | null = null;
 let controlName: string | null = null;
@@ -14,10 +8,11 @@ export function bang() {
     return;
   }
   const controlSurfaceId = getControlSurfaceId(controlSurfaceName);
-  const controlId: Id = new LiveAPI(controlSurfaceId).call(
+
+  const controlId = new LiveAPI(controlSurfaceId).call(
     "get_control",
     controlName,
-  );
+  ) as Id;
   outlet(0, controlId);
 }
 
@@ -26,10 +21,12 @@ export function observe() {
     return;
   }
   const controlSurfaceId = getControlSurfaceId(controlSurfaceName);
-  const controlId: Id = new LiveAPI(controlSurfaceId).call(
+
+  const controlId = new LiveAPI(controlSurfaceId).call(
     "get_control",
     controlName,
-  );
+  ) as Id;
+
   const control = new LiveAPI((value: any) => {
     outlet(0, value.slice(1));
   });
@@ -62,16 +59,16 @@ export function list_controls() {
     return;
   }
   const controlSurfaceId = getControlSurfaceId(controlSurfaceName);
-  const controlNames = new LiveAPI(controlSurfaceId)
-    .call("get_control_names")
-    .filter((str: string) => {
-      return (
-        str !== "control" &&
-        str !== "control_names" &&
-        isNaN(Number(str)) &&
-        str !== "done"
-      );
-    });
+  const controlNames = (
+    new LiveAPI(controlSurfaceId).call("get_control_names") as string[]
+  ).filter((str: string) => {
+    return (
+      str !== "control" &&
+      str !== "control_names" &&
+      isNaN(Number(str)) &&
+      str !== "done"
+    );
+  });
   for (const controlName of controlNames) {
     outlet(0, controlName);
   }

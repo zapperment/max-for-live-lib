@@ -17,7 +17,5 @@ export function bang() {
     clipSlots.find((clipSlot: LiveAPI) => clipSlot.get("is_playing")[0] > 0) !==
     undefined;
   outlet(0, anySlotPlaying ? 1 : 0);
-  const fiki: string[] = ["fiki"];
-  const isFiki = fiki.find((curr: string) => curr === "fiki") !== undefined;
   outlet(anySlotPlaying ? 1 : 2, "bang");
 }

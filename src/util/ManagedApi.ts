@@ -1,10 +1,9 @@
-import { includes } from "core-js/actual/array";
+import "core-js/actual/array/includes";
 
-import log from "./log";
 import type ApiManager from "./ApiManager";
 
 export default class ManagedApi {
-  private _id: string;
+  private readonly _id: string;
   private _api: LiveAPI;
   private _apiMan: ApiManager;
   private _children: string[] = [];
@@ -49,7 +48,7 @@ export default class ManagedApi {
   }
 
   add(id: string, callback: (...args: any[]) => void) {
-    if (includes(this._children, id)) {
+    if (this._children.includes(id)) {
       return;
     }
     const managedApi = this._apiMan.make(id, callback);
