@@ -5,7 +5,6 @@ import {
   log,
   convertClipTriggerQuantisationToBeats,
 } from "../../util";
-import { is } from "core-js/core/object";
 
 autowatch = 1;
 inlets = 1;
@@ -107,6 +106,7 @@ function updateDerivedStateProp(
     {} as CalculationInput,
   );
   const nextValue = calculate(propsForCalculation);
+  doStateUpdateIfChanged(prop, nextValue);
 }
 
 function updateCtqBeats() {
