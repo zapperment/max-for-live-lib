@@ -142,6 +142,6 @@ export default class BeatLampManager {
     if (!loggedStateProps.includes(prop)) {
       return;
     }
-    log(`state.${prop} = ${this._state[prop]}`);
+    log(`> state.${prop} = ${this._state[prop]}`);
   }
 }
