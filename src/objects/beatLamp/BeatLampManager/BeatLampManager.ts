@@ -7,6 +7,14 @@ import {
 } from "../../../util";
 import { loggedStateProps, numberOfLamps } from "../config";
 
+const observedLiveSetProps: StateProp[] = [
+  "clip_trigger_quantization",
+  "signature_numerator",
+  "signature_denominator",
+  "is_playing",
+  "current_song_time",
+];
+
 export default class BeatLampManager {
   private _state: State = {
     clip_trigger_quantization: null,
@@ -19,19 +27,12 @@ export default class BeatLampManager {
     current_beat_in_span: null,
     current_lamp: null,
   };
-  private _observedLiveSetProps: StateProp[] = [
-    "clip_trigger_quantization",
-    "signature_numerator",
-    "signature_denominator",
-    "is_playing",
-    "current_song_time",
-  ];
 
   private _apiMan = new ApiManager();
 
   start() {
     if (this._apiMan.hasNoApis) {
-      this._observedLiveSetProps.forEach(this._observeLiveSet.bind(this));
+      observedLiveSetProps.forEach(this._observeLiveSet.bind(this));
     }
     this._apiMan.start();
   }
@@ -135,13 +136,15 @@ export default class BeatLampManager {
     if (nextValue !== this._state[prop]) {
       this._state[prop] = nextValue;
       this._maybeLogStateChange(prop);
+      return true;
     }
+    return false;
   }
 
   private _maybeLogStateChange(prop: StateProp) {
     if (!loggedStateProps.includes(prop)) {
       return;
     }
-    log(`> state.${prop} = ${this._state[prop]}`);
+    log(`>> state.${prop} = ${this._state[prop]}`);
   }
 }
