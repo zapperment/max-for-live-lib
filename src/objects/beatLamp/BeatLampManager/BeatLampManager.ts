@@ -1,11 +1,11 @@
 import "core-js/actual/array/includes";
-import type { State, StateProp, CalculationInput } from "./types";
+import type { State, StateProp, CalculationInput } from "../types";
 import {
   ApiManager,
   convertClipTriggerQuantisationToBeats,
   log,
 } from "../../../util";
-import { loggedStateProps, numberOfLamps } from "./config";
+import { loggedStateProps, numberOfLamps } from "../config";
 
 const observedLiveSetProps: StateProp[] = [
   "clip_trigger_quantization",
