@@ -122,6 +122,8 @@ export default class BeatLampManager {
       "current_lamp",
       ["ctq_beats", "current_beat_in_span"],
       ({ ctq_beats, current_beat_in_span }) => {
+        log(`_UCL: ctq_beats=${ctq_beats}`)
+        log(`_UCL: current_beat_in_span=${current_beat_in_span}`)
         const beatsPerLamp = ctq_beats / numberOfLamps;
         return Math.floor(current_beat_in_span / beatsPerLamp);
       },
