@@ -122,14 +122,8 @@ export default class BeatLampManager {
       "current_lamp",
       ["ctq_beats", "current_beat_in_span"],
       ({ ctq_beats, current_beat_in_span }) => {
-        log(`_UCL: ctq_beats=${ctq_beats}`)
-        log(`_UCL: current_beat_in_span=${current_beat_in_span}`)
-        log(`_UCL: numberOfLamps=${numberOfLamps}`)
         const beatsPerLamp = ctq_beats / numberOfLamps;
-        log(`_UCL: beatsPerLamp=${beatsPerLamp}`)
-        const currentLamp = Math.floor(current_beat_in_span / beatsPerLamp);
-        log(`_UCL: currentLamp=${currentLamp}`)
-        return currentLamp;
+        return Math.floor(current_beat_in_span / beatsPerLamp);
       },
     );
   }
@@ -151,6 +145,6 @@ export default class BeatLampManager {
     if (!loggedStateProps.includes(prop)) {
       return;
     }
-    log(`>> state.${prop} = ${this._state[prop]}`);
+    log(`state.${prop} = ${this._state[prop]}`);
   }
 }
