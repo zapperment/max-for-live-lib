@@ -31,7 +31,7 @@ export default class BeatLampManager {
 
   start() {
     if (this._apiMan.hasNoApis) {
-      this._observedLiveSetProps.forEach(this._observeLiveSet);
+      this._observedLiveSetProps.forEach(this._observeLiveSet.bind(this));
     }
     this._apiMan.start();
   }
