@@ -1,13 +1,13 @@
-import calculateBeatsPerBar from "./calculateBeatsPerBar";
+import { calculateBeatsPerBar } from "./musicalTiming";
 
 export default function (
   clipTriggerQuantization: number,
   signatureNumerator: number,
-  signatureDenominator: number
+  signatureDenominator: number,
 ) {
   const beatsPerBar = calculateBeatsPerBar(
     signatureNumerator,
-    signatureDenominator
+    signatureDenominator,
   );
   switch (clipTriggerQuantization) {
     // 0 = None
@@ -54,7 +54,7 @@ export default function (
       return 0.125;
     default:
       throw new Error(
-        `Invalid clip trigger quantization: ${clipTriggerQuantization}`
+        `Invalid clip trigger quantization: ${clipTriggerQuantization}`,
       );
   }
 }
