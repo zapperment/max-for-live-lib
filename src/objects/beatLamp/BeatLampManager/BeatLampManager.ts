@@ -20,8 +20,6 @@ export default class BeatLampManager {
     is_active: null,
     current_song_time: null,
     ctq_beats: null,
-    elapsed_quantization_spans: null,
-    current_beat_in_span: null,
     current_lamp: null,
   };
 
@@ -57,16 +55,16 @@ export default class BeatLampManager {
 
   private _updateDerivedState() {
     const isActiveHasChanged = this._updateIsActive();
+
     if (isActiveHasChanged && this._state.is_active === 0) {
       // if quantisation is “None”, it makes no sense to have beat lamps on
-      // PH_TODO: make sure lamps are turned off in this case
       this._sendAllLampsOffMidiMessage();
       return;
     }
+
     this._updateCtqBeats();
-    this._updateElapsedQuantisationSpans();
-    this._updateCurrentBeatInSpan();
     const currentLampHasChanged = this._updateCurrentLamp();
+
     if (currentLampHasChanged) {
       this._sendLampMidiMessage();
     }
@@ -121,31 +119,18 @@ export default class BeatLampManager {
     );
   }
 
-  private _updateElapsedQuantisationSpans() {
-    return this._updateDerivedStateProp(
-      "elapsed_quantization_spans",
-      ["ctq_beats", "current_song_time"],
-      ({ ctq_beats, current_song_time }) =>
-        Math.floor(current_song_time / ctq_beats),
-    );
-  }
-
-  private _updateCurrentBeatInSpan() {
-    return this._updateDerivedStateProp(
-      "current_beat_in_span",
-      ["elapsed_quantization_spans", "ctq_beats", "current_song_time"],
-      ({ elapsed_quantization_spans, ctq_beats, current_song_time }) =>
-        current_song_time - elapsed_quantization_spans * ctq_beats,
-    );
-  }
-
   private _updateCurrentLamp() {
     return this._updateDerivedStateProp(
       "current_lamp",
-      ["ctq_beats", "current_beat_in_span"],
-      ({ ctq_beats, current_beat_in_span }) => {
+      ["ctq_beats", "current_song_time"],
+      ({ ctq_beats, current_song_time }) => {
+        const elapsedQuantisationCycles = Math.floor(
+          current_song_time / ctq_beats,
+        );
+        const currentBeatInSpan =
+          current_song_time - elapsedQuantisationCycles * ctq_beats;
         const beatsPerLamp = ctq_beats / numberOfLamps;
-        return Math.floor(current_beat_in_span / beatsPerLamp);
+        return Math.floor(currentBeatInSpan / beatsPerLamp);
       },
     );
   }
