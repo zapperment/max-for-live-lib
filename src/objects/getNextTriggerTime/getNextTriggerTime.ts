@@ -14,7 +14,7 @@ export function bang() {
   const signatureDenominator = getNumberProperty(
     "live_set signature_denominator",
   );
-  const clipTriggerQuantisationInBeats = mt.beatsForLQ(
+  const clipTriggerQuantisationInBeats = mt.beatsForCTQ(
     clipTriggerQuantisation,
     signatureNumerator,
     signatureDenominator,

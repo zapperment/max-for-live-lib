@@ -1,16 +1,17 @@
 /**
- * Returns the number of bars for a given launch quantisation and time
+ * Returns the number of bars for a given clip trigger quantisation and time
  * signature.
  *
- * @param lqIndex - The index of the Ableton Live launch quantisation mode
+ * @param ctqIndex - The index of the Ableton Live clip trigger quantisation
+ *   mode
  * @param tsNum - The numerator of the time signature, e.g. 6 for 6/8 time
  * @param tsDen - The denominator of the time signature, e.g. 8 for 6/8 time.
  * @returns The number of bars
- * @name barsForLQ
+ * @name barsForCTQ
  */
-export default (lqIndex: number, tsNum: number, tsDen: number) => {
+export default (ctqIndex: number, tsNum: number, tsDen: number) => {
   const tsFraction = tsDen / tsNum;
-  switch (lqIndex) {
+  switch (ctqIndex) {
     // 0 = None
     case 0:
       return null;
@@ -68,6 +69,6 @@ export default (lqIndex: number, tsNum: number, tsDen: number) => {
       return tsFraction / 32;
 
     default:
-      throw new Error(`Invalid launch quantisation: ${lqIndex}`);
+      throw new Error(`Invalid launch quantisation: ${ctqIndex}`);
   }
 };

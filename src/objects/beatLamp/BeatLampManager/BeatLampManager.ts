@@ -101,7 +101,7 @@ export default class BeatLampManager {
         signature_denominator,
         signature_numerator,
       }: CalculationInput) =>
-        mt.beatsForLQ(
+        mt.beatsForCTQ(
           clip_trigger_quantization,
           signature_numerator,
           signature_denominator,
