@@ -3,6 +3,7 @@ import type { StateProp } from "./types";
 export const numberOfLamps = 8;
 
 export const loggedStateProps: StateProp[] = [
+  "is_active",
   "clip_trigger_quantization",
   "signature_numerator",
   "signature_denominator",
@@ -10,7 +11,7 @@ export const loggedStateProps: StateProp[] = [
   "ctq_beats",
   "elapsed_quantization_spans",
   // "current_song_time",
-  "current_beat_in_span",
+  // "current_beat_in_span",
   "current_lamp",
 ];
 

@@ -17,6 +17,7 @@ export default class BeatLampManager {
     signature_numerator: null,
     signature_denominator: null,
     is_playing: null,
+    is_active: null,
     current_song_time: null,
     ctq_beats: null,
     elapsed_quantization_spans: null,
@@ -55,9 +56,11 @@ export default class BeatLampManager {
   }
 
   private _updateDerivedState() {
-    if (this._state.clip_trigger_quantization === 0) {
+    const isActiveHasChanged = this._updateIsActive();
+    if (isActiveHasChanged && this._state.is_active === 0) {
       // if quantisation is “None”, it makes no sense to have beat lamps on
       // PH_TODO: make sure lamps are turned off in this case
+      this._sendAllLampsOffMidiMessage();
       return;
     }
     this._updateCtqBeats();
@@ -86,6 +89,15 @@ export default class BeatLampManager {
     );
     const nextValue = calculate(propsForCalculation);
     return this._doStateUpdateIfChanged(prop, nextValue);
+  }
+
+  private _updateIsActive() {
+    return this._updateDerivedStateProp(
+      "is_active",
+      ["clip_trigger_quantization"],
+      ({ clip_trigger_quantization }) =>
+        clip_trigger_quantization > 0 ? 1 : 0,
+    );
   }
 
   private _updateCtqBeats() {
@@ -123,7 +135,7 @@ export default class BeatLampManager {
       "current_beat_in_span",
       ["elapsed_quantization_spans", "ctq_beats", "current_song_time"],
       ({ elapsed_quantization_spans, ctq_beats, current_song_time }) =>
-        Math.floor(current_song_time - elapsed_quantization_spans * ctq_beats),
+        current_song_time - elapsed_quantization_spans * ctq_beats,
     );
   }
 
@@ -158,14 +170,19 @@ export default class BeatLampManager {
     log(`state.${prop} = ${this._state[prop]}`);
   }
 
+  private _sendAllLampsOffMidiMessage() {
+    for (let lampIndex = 0; lampIndex < 8; lampIndex++) {
+      const lampPosition = lampIndex * 10 + 19;
+      outlet(0, [176, lampPosition, 0]);
+    }
+  }
+
   private _sendLampMidiMessage() {
     for (let lampIndex = 0; lampIndex < 8; lampIndex++) {
       const colourIndex =
-        lampIndex <= this._state.current_lamp!
-          ? lampColours[lampIndex].on
-          : lampColours[lampIndex].off;
+        lampIndex <= this._state.current_lamp! ? lampColours[lampIndex].on : 0;
       const lampPosition = lampIndex * 10 + 19;
-      outlet(0, [144, lampPosition, colourIndex]);
+      outlet(0, [176, lampPosition, colourIndex]);
     }
   }
 }
