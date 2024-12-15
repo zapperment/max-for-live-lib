@@ -1,8 +1,4 @@
-import {
-  getNumberProperty,
-  convertClipTriggerQuantisationToBeats,
-  log,
-} from "../../util";
+import { getNumberProperty, mt, log } from "../../util";
 
 autowatch = 1;
 inlets = 1;
@@ -18,11 +14,14 @@ export function bang() {
   const signatureDenominator = getNumberProperty(
     "live_set signature_denominator",
   );
-  const clipTriggerQuantisationInBeats = convertClipTriggerQuantisationToBeats(
+  const clipTriggerQuantisationInBeats = mt.beatsForLQ(
     clipTriggerQuantisation,
     signatureNumerator,
     signatureDenominator,
   );
+  if (clipTriggerQuantisationInBeats === null) {
+    return;
+  }
   const currentSongTime = getNumberProperty("live_set current_song_time");
   const elapsedQuantisationSpans = Math.floor(
     currentSongTime / clipTriggerQuantisationInBeats,

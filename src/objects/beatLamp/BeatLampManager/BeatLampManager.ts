@@ -1,10 +1,6 @@
 import "core-js/actual/array/includes";
 import type { State, StateProp, CalculationInput } from "../types";
-import {
-  ApiManager,
-  convertClipTriggerQuantisationToBeats,
-  log,
-} from "../../../util";
+import { ApiManager, mt, log } from "../../../util";
 import { loggedStateProps, numberOfLamps, lampColours } from "../config";
 
 const observedLiveSetProps: StateProp[] = [
@@ -59,6 +55,11 @@ export default class BeatLampManager {
   }
 
   private _updateDerivedState() {
+    if (this._state.clip_trigger_quantization === 0) {
+      // if quantisation is “None”, it makes no sense to have beat lamps on
+      // PH_TODO: make sure lamps are turned off in this case
+      return;
+    }
     this._updateCtqBeats();
     this._updateElapsedQuantisationSpans();
     this._updateCurrentBeatInSpan();
@@ -100,11 +101,11 @@ export default class BeatLampManager {
         signature_denominator,
         signature_numerator,
       }: CalculationInput) =>
-        convertClipTriggerQuantisationToBeats(
+        mt.beatsForLQ(
           clip_trigger_quantization,
           signature_numerator,
           signature_denominator,
-        ),
+        )!, // we know this can't be null because clip_trigger_quantization is validated previously
     );
   }
 

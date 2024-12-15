@@ -7,7 +7,7 @@
  * @param signatureDenominator - The denominator of the time signature, e.g. 8
  *   for 6/8 time.
  * @returns The number of beats per bar
- * @name calculateBeatsPerBar
+ * @name beatsPerBar
  */
 export default (signatureNumerator: number, signatureDenominator: number) =>
   (4 / signatureDenominator) * signatureNumerator;

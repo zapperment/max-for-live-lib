@@ -1,4 +1,4 @@
-import calculateBeatsPerBar from "./calculateBeatsPerBar";
+import beatsPerBar from "./beatsPerBar";
 
 test.each`
   tsName   | tsNumerator | tsDenominator | expected
@@ -11,6 +11,6 @@ test.each`
 `(
   "given a $tsName time signature, returns $expected",
   ({ tsNumerator, tsDenominator, expected }) => {
-    expect(calculateBeatsPerBar(tsNumerator, tsDenominator)).toBe(expected);
+    expect(beatsPerBar(tsNumerator, tsDenominator)).toBe(expected);
   },
 );
