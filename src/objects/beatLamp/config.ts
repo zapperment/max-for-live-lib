@@ -12,3 +12,14 @@ export const loggedStateProps: StateProp[] = [
   "current_beat_in_span",
   "current_lamp",
 ];
+
+export const lampColours = [
+  { on: 21, off: 23 },
+  { on: 21, off: 23 },
+  { on: 21, off: 23 },
+  { on: 21, off: 23 },
+  { on: 21, off: 23 },
+  { on: 13, off: 15 },
+  { on: 13, off: 15 },
+  { on: 5, off: 7 },
+];

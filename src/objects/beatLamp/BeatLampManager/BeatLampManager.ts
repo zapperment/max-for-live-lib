@@ -5,7 +5,7 @@ import {
   convertClipTriggerQuantisationToBeats,
   log,
 } from "../../../util";
-import { loggedStateProps, numberOfLamps } from "../config";
+import { loggedStateProps, numberOfLamps, lampColours } from "../config";
 
 const observedLiveSetProps: StateProp[] = [
   "clip_trigger_quantization",
@@ -29,6 +29,12 @@ export default class BeatLampManager {
   };
 
   private _apiMan = new ApiManager();
+
+  private _outlet;
+
+  constructor(outlet: (outlet_number: number, ...args: unknown[]) => void) {
+    this._outlet = outlet;
+  }
 
   start() {
     if (this._apiMan.hasNoApis) {
@@ -56,7 +62,10 @@ export default class BeatLampManager {
     this._updateCtqBeats();
     this._updateElapsedQuantisationSpans();
     this._updateCurrentBeatInSpan();
-    this._updateCurrentLamp();
+    const currentLampHasChanged = this._updateCurrentLamp();
+    if (currentLampHasChanged) {
+      this._sendLampMidiMessage();
+    }
   }
 
   private _updateDerivedStateProp(
@@ -65,7 +74,7 @@ export default class BeatLampManager {
     calculate: (props: CalculationInput) => number,
   ) {
     if (this._isMissingProps(...requiredProps)) {
-      return;
+      return false;
     }
     const propsForCalculation = requiredProps.reduce(
       (acc, curr) => ({
@@ -75,11 +84,11 @@ export default class BeatLampManager {
       {} as CalculationInput,
     );
     const nextValue = calculate(propsForCalculation);
-    this._doStateUpdateIfChanged(prop, nextValue);
+    return this._doStateUpdateIfChanged(prop, nextValue);
   }
 
   private _updateCtqBeats() {
-    this._updateDerivedStateProp(
+    return this._updateDerivedStateProp(
       "ctq_beats",
       [
         "clip_trigger_quantization",
@@ -100,7 +109,7 @@ export default class BeatLampManager {
   }
 
   private _updateElapsedQuantisationSpans() {
-    this._updateDerivedStateProp(
+    return this._updateDerivedStateProp(
       "elapsed_quantization_spans",
       ["ctq_beats", "current_song_time"],
       ({ ctq_beats, current_song_time }) =>
@@ -109,7 +118,7 @@ export default class BeatLampManager {
   }
 
   private _updateCurrentBeatInSpan() {
-    this._updateDerivedStateProp(
+    return this._updateDerivedStateProp(
       "current_beat_in_span",
       ["elapsed_quantization_spans", "ctq_beats", "current_song_time"],
       ({ elapsed_quantization_spans, ctq_beats, current_song_time }) =>
@@ -118,7 +127,7 @@ export default class BeatLampManager {
   }
 
   private _updateCurrentLamp() {
-    this._updateDerivedStateProp(
+    return this._updateDerivedStateProp(
       "current_lamp",
       ["ctq_beats", "current_beat_in_span"],
       ({ ctq_beats, current_beat_in_span }) => {
@@ -146,5 +155,16 @@ export default class BeatLampManager {
       return;
     }
     log(`state.${prop} = ${this._state[prop]}`);
+  }
+
+  private _sendLampMidiMessage() {
+    for (let lampIndex = 0; lampIndex < 8; lampIndex++) {
+      const colourIndex =
+        lampIndex <= this._state.current_lamp!
+          ? lampColours[lampIndex].on
+          : lampColours[lampIndex].off;
+      const lampPosition = lampIndex * 10 + 19;
+      outlet(0, [144, lampPosition, colourIndex]);
+    }
   }
 }
