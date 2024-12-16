@@ -162,10 +162,12 @@ export default class BeatLampManager {
     }
   }
 
+  // send MIDI message to Launchpad Pro MK3 to light the lamps
+  // on the scene trigger buttons on the right
   private _sendLampMidiMessage() {
     for (let lampIndex = 0; lampIndex < 8; lampIndex++) {
       const colourIndex =
-        lampIndex <= this._state.current_lamp! ? lampColours[lampIndex].on : 0;
+        lampIndex <= this._state.current_lamp! ? lampColours[lampIndex] : 0;
       const lampPosition = lampIndex * 10 + 19;
       outlet(0, [176, lampPosition, colourIndex]);
     }
