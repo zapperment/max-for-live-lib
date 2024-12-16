@@ -74,6 +74,24 @@ yarn build
 
 ## Included js objects
 
+### beatLamp
+
+This js object is intended to be used with a Novation Launchpad Pro MK3. It
+helps live performers keep track of when the triggered clips will start playing.
+
+Connect it to a _midiout_ object and set the MIDI output on the track with your
+Max for Live device to _Launchpad Pro MK3 DAW_.
+
+When Live starts playing, the scene trigger buttons on the right light up to
+indicate how much of the current loop has elapsed. This is dependent on the
+global launch quantisation setting you have. If you set it to 8 bars, one of the
+scene buttons will light up for every bar. If you set it to 1 bar, the lights
+will count eighths notes.
+
+The first 5 beat lamps will light up in green, the next two in yellow, and
+finally the 8th will light up in red, indicating that it is high time to figure
+out which clips to launch for the next cycle.
+
 ### filterMidiCC
 
 This js object can receive MIDI input and filter out MIDI control change (CC)
@@ -91,13 +109,13 @@ useful for MIDI controllers.
 
 ### getNextTriggerTime
 
-When this JS object receives a bang, it calculates the musical time in beats that
-a clip that has been fired will start playing.
+When this JS object receives a bang, it calculates the musical time in beats
+that a clip that has been fired will start playing.
 
 ### firedSlotStartOrStop
 
 When this JS object receives an integer value as returned by the slot property
-*fired_slot_index*, it determines if that value means a clip will start playing
+_fired_slot_index_, it determines if that value means a clip will start playing
 or the track will stop playing, and issues a bang to outlet 1 or 3, accordingly.
 
 If no slot has been fired, a bang is sent to outlet 2.
@@ -106,18 +124,18 @@ If no slot has been fired, a bang is sent to outlet 2.
 
 When this JS object receives a bang, it checks if any slot in the device's track
 is playing. It sends a number to outlet 1 (0: no slot is playing, otherwise 1).
-It also sends a bang to outlet 1 if any slot is playing or a bang to outlet 2
-if no slot is playing.
+It also sends a bang to outlet 1 if any slot is playing or a bang to outlet 2 if
+no slot is playing.
 
 ### mkIIIDisplay
 
-Write text to the display of the Novation SL MkIII MIDI keyboard. Send a message 
+Write text to the display of the Novation SL MkIII MIDI keyboard. Send a message
 to the inlet like this:
 
 `send [column] [message]`
 
-* *column* is the column (0-7) in which to write the text (number)
-* *message* is text to write (list of symbols)
+- _column_ is the column (0-7) in which to write the text (number)
+- _message_ is text to write (list of symbols)
 
 The text is written in the top row, above the current knob value. Keep in mind
 that the text needs to be short, around 9 characters, lest it is truncated with
@@ -127,7 +145,7 @@ ellipses.
 
 To write the text "hi there" above knob 1:
 
-`send 0 hi there` 
+`send 0 hi there`
 
 ## Developing your own js objects
 
