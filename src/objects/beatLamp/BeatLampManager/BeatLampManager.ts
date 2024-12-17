@@ -159,6 +159,7 @@ export default class BeatLampManager {
     for (let lampIndex = 0; lampIndex < 8; lampIndex++) {
       const lampPosition = lampIndex * 10 + 19;
       outlet(0, [176, lampPosition, 0]);
+      outlet(lampIndex + 1, 0);
     }
   }
 
@@ -166,10 +167,11 @@ export default class BeatLampManager {
   // on the scene trigger buttons on the right
   private _sendLampMidiMessage() {
     for (let lampIndex = 0; lampIndex < 8; lampIndex++) {
-      const colourIndex =
-        lampIndex <= this._state.current_lamp! ? lampColours[lampIndex] : 0;
+      const isOn = lampIndex <= this._state.current_lamp!;
+      const colourIndex = isOn ? lampColours[lampIndex] : 0;
       const lampPosition = lampIndex * 10 + 19;
       outlet(0, [176, lampPosition, colourIndex]);
+      outlet(lampIndex + 1, isOn ? 1 : 0);
     }
   }
 }
