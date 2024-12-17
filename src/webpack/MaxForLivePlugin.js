@@ -20,12 +20,7 @@ class MaxForLivePlugin {
                 const lines = old
                   .source()
                   .split(/\r?\n/)
-                  .map((line) =>
-                    line.replace(
-                      /^exports(\.[a-z][_a-z0-9]+ = [_a-z0-9]+;)$/i,
-                      "maxJsObject$1",
-                    ),
-                  );
+                  .map(processLine);
                 lines.unshift("var maxJsObject = this;");
                 return new ConcatSource(lines.join("\n"));
               });
@@ -35,6 +30,19 @@ class MaxForLivePlugin {
       );
     });
   }
+}
+
+function processLine(line) {
+  const matcher = /^exports\.([a-z][_a-z0-9]+) = ([_a-z0-9]+);$/i
+  const matches = line.match(matcher);
+  if (matches === null) {
+    return line;
+  }
+  const [ ,exportName, reference] = matches;
+  if (exportName !== reference) {
+    return line;
+  }
+  return line.replace(matcher,"maxJsObject.$1 = $2;")
 }
 
 module.exports = MaxForLivePlugin;

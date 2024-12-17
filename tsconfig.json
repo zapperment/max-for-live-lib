@@ -8,7 +8,7 @@
     "module": "commonjs" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', or 'ESNext'. */,
 
     /* Specify library files to be included in the compilation. */
-    "lib": ["es2016"],
+    "lib": ["es2017"],
 
     // "allowJs": true,                       /* Allow javascript files to be compiled. */
     // "checkJs": true,                       /* Report errors in .js files. */
@@ -55,7 +55,7 @@
     // "typeRoots": [],                       /* List of folders to include type definitions from. */
 
     /* Type declaration files to be included in compilation. */
-    "types": ["core-js"],
+    "types": ["core-js", "vitest/globals"],
 
     // "allowSyntheticDefaultImports": true,  /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */
 

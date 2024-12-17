@@ -55,4 +55,8 @@ export default class ManagedApi {
     this._children.push(id);
     return managedApi;
   }
+
+  get id() {
+    return this._id;
+  }
 }

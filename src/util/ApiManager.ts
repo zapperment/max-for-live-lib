@@ -1,4 +1,3 @@
-import log from "./log";
 import ManagedApi from "./ManagedApi";
 
 export default class ApiManager {
@@ -39,7 +38,11 @@ export default class ApiManager {
     return finalParent;
   }
 
-  kill(id: string) {
+  kill(id?: string) {
+    if (id === undefined) {
+      Object.keys(this._apis).forEach(this.kill.bind(this));
+      return;
+    }
     const api = this._apis[id];
     if (!api) {
       return;
@@ -48,7 +51,11 @@ export default class ApiManager {
     delete this._apis[id];
   }
 
-  start(id: string) {
+  start(id?: string) {
+    if (id === undefined) {
+      Object.keys(this._apis).forEach(this.start.bind(this));
+      return;
+    }
     const api = this._apis[id];
     if (!api) {
       return;
@@ -56,11 +63,23 @@ export default class ApiManager {
     api.start();
   }
 
-  stop(id: string) {
+  stop(id?: string) {
+    if (id === undefined) {
+      Object.keys(this._apis).forEach(this.stop.bind(this));
+      return;
+    }
     const api = this._apis[id];
     if (!api) {
       return;
     }
     api.stop();
+  }
+
+  get hasApis() {
+    return Object.keys(this._apis).length > 0;
+  }
+
+  get hasNoApis() {
+    return !this.hasApis;
   }
 }
