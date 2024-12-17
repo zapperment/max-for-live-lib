@@ -1,6 +1,6 @@
 import { BeatLampManager } from "./BeatLampManager";
 
-autowatch = 1;
+autowatch = 0;
 inlets = 1;
 outlets = 9;
 
