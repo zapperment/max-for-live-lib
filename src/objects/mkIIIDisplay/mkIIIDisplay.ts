@@ -1,4 +1,4 @@
-import { convertStringNumberArrayToIds } from "../../util";
+import { convertStringNumberArrayToIds, log } from "../../util";
 
 setinletassist(0, "send [column] [text]");
 
@@ -16,13 +16,14 @@ const endOfSysExMessage = 247;
 
 export function send(column: number, ...values: string[]) {
   const controlSurfaceIds = convertStringNumberArrayToIds(
-    new LiveAPI("live_app").get("control_surfaces")
+    new LiveAPI("live_app").get("control_surfaces"),
   ).filter((id) => new LiveAPI(id).type === controlSurfaceName);
   if (controlSurfaceIds.length === 0) {
     throw new Error(
-      `Could not find control surface ${controlSurfaceName} - make sure the keyboard is connected`
+      `Could not find control surface ${controlSurfaceName} - make sure the keyboard is connected`,
     );
   }
+  log(`send column ${column} values ${values.join(" ")}`);
   const bytes = [
     ...sysExHeader,
     setScreenProperties,
