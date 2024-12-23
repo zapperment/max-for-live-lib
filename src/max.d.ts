@@ -614,7 +614,7 @@ declare class LiveAPI {
    * The id of the Live object referred to by the LiveAPI object. These ids are dynamic and awarded in realtime from the Live application, so should not be stored and used over multiple runs of Max
    * for Live.
    */
-  id: number;
+  id: string;
 
   /**
    * The path to the Live object referred to by the LiveAPI object. These paths are dependent on the currently open Set in Live, but are otherwise stable: live_set tracks 0 devices 0 will always
