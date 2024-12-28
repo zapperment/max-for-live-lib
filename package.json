@@ -36,5 +36,5 @@
     "url": "https://github.com/zapperment/max-for-live-lib/issues"
   },
   "homepage": "https://github.com/zapperment/max-for-live-lib#readme",
-  "packageManager": "yarn@4.4.1"
+  "packageManager": "yarn@4.5.3"
 }
