@@ -1,1 +1,1 @@
-type Id = ["id", number];
+type Id = ["id", string];
