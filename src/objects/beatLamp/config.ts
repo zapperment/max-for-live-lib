@@ -9,6 +9,5 @@ export const loggedStateProps: StateProp[] = [
   "is_playing",
   "ctq_beats",
   "elapsed_quantization_spans",
-  "current_beat_in_span",
   "current_lamp",
 ];
